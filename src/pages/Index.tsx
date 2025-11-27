@@ -291,11 +291,6 @@ const Index = () => {
                             >
                               {entry.text}
                             </p>
-                            <span 
-                              className="absolute -left-6 top-0 text-xs opacity-0 group-hover:opacity-60 transition-opacity duration-200 text-muted-foreground"
-                            >
-                              {entry.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                            </span>
                           </div>
                         )}
                       </motion.div>
