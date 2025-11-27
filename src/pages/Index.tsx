@@ -27,6 +27,7 @@ const Index = () => {
   const [isThinking, setIsThinking] = useState(false);
   const [logEntries, setLogEntries] = useState<LogEntry[]>([]);
   const [expandedLogId, setExpandedLogId] = useState<string | null>(null);
+  const [lastLogIndex, setLastLogIndex] = useState(0);
 
   // Hide thought bubble after inactivity
   useEffect(() => {
@@ -126,25 +127,23 @@ const Index = () => {
 
   // Handle Enter key to save log entry
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === "Enter" && !e.shiftKey && text.trim().length > 0) {
-      e.preventDefault();
-      
-      // Save the current log entry
+    if (e.key === "Enter" && !e.shiftKey) {
+      const contentBeforeEnter = text.slice(lastLogIndex).trim();
+
+      if (contentBeforeEnter.length === 0) {
+        return;
+      }
+
       const newEntry: LogEntry = {
         id: Date.now().toString(),
-        text: text.trim(),
+        text: contentBeforeEnter,
         emotion: personaState,
         color: moodColor,
         timestamp: new Date(),
       };
-      
+
       setLogEntries((prev) => [...prev, newEntry]);
-      
-      // Clear the text after saving
-      setText("");
-      setMicroComments([]);
-      setMemoryBubble(null);
-      setIsThinking(false);
+      setLastLogIndex(text.length + 1);
     }
   };
 
