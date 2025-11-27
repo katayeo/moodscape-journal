@@ -29,11 +29,11 @@ export function JournalSidebar({ logEntries, onMomentClick }: JournalSidebarProp
   return (
     <Sidebar side="right" className={open ? "w-80" : "w-0"} collapsible="offcanvas">
       <SidebarTrigger className="m-2 self-start" />
-      
+
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel className="text-lg font-semibold">Past Moments</SidebarGroupLabel>
-          
+
           <SidebarGroupContent>
             <div className="space-y-3 pr-2 overflow-y-auto max-h-[calc(100vh-8rem)]">
               {logEntries.map((entry) => (
@@ -45,27 +45,25 @@ export function JournalSidebar({ logEntries, onMomentClick }: JournalSidebarProp
                   className="p-3 rounded-lg cursor-pointer hover:opacity-90 transition-all duration-300"
                   style={{
                     border: `2px solid ${entry.color}`,
-                    background: `linear-gradient(to right, white, ${entry.color}15)`,
+                    background: `linear-gradient(to right, gray, ${entry.color}15)`,
                   }}
                   onClick={() => onMomentClick(entry.id)}
                 >
                   <div className="flex items-center justify-between mb-2">
                     <span
                       className="text-xs font-medium capitalize px-2 py-1 rounded"
-                      style={{ 
+                      style={{
                         backgroundColor: entry.color,
-                        color: 'white',
+                        color: "white",
                       }}
                     >
                       {entry.emotion}
                     </span>
                     <span className="text-xs text-muted-foreground">
-                      {entry.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                      {entry.timestamp.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
                     </span>
                   </div>
-                  <p className="text-sm text-foreground/80 line-clamp-3">
-                    {entry.text}
-                  </p>
+                  <p className="text-sm text-foreground/80 line-clamp-3">{entry.text}</p>
                 </motion.div>
               ))}
             </div>
