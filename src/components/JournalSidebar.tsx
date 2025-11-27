@@ -45,7 +45,7 @@ export function JournalSidebar({ logEntries, onMomentClick }: JournalSidebarProp
                   className="p-3 rounded-lg cursor-pointer hover:opacity-90 transition-all duration-300"
                   style={{
                     border: `2px solid ${entry.color}`,
-                    background: `linear-gradient(to right, gray, ${entry.color}15)`,
+                    background: `linear-gradient(to right, white, ${entry.color}15)`,
                   }}
                   onClick={() => onMomentClick(entry.id)}
                 >
@@ -54,7 +54,7 @@ export function JournalSidebar({ logEntries, onMomentClick }: JournalSidebarProp
                       className="text-xs font-medium capitalize px-2 py-1 rounded"
                       style={{
                         backgroundColor: entry.color,
-                        color: "white",
+                        color: "gray",
                       }}
                     >
                       {entry.emotion}
