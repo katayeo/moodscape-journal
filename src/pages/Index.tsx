@@ -216,41 +216,26 @@ const Index = () => {
             Write freely, and watch your emotions come alive
           </p>
           
-          {/* Alive Canvas - Scrollable container with all moments */}
-          <div className="flex-1 overflow-y-auto max-h-[calc(100vh-20rem)] space-y-4 mb-4 pr-2">
-            <AnimatePresence>
-              {logEntries.map((entry) => (
-                <motion.div
-                  key={entry.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
-                  transition={{ duration: 0.3 }}
-                  className="rounded-lg overflow-hidden cursor-pointer transition-all duration-300"
-                  style={{
-                    borderWidth: '3px',
-                    borderColor: entry.color,
-                    backgroundColor: `${entry.color}08`,
-                    boxShadow: `0 0 20px ${entry.color}20`,
-                  }}
-                  onClick={() => editingMomentId !== entry.id && handleEditMoment(entry.id)}
-                >
-                  <div className="p-4 backdrop-blur-sm bg-card/30">
-                    <div className="flex items-center justify-between mb-3">
-                      <span
-                        className="text-xs font-medium capitalize px-2 py-1 rounded"
-                        style={{ 
-                          backgroundColor: entry.color,
-                          color: 'white',
-                        }}
-                      >
-                        {entry.emotion}
-                      </span>
-                      <span className="text-xs text-muted-foreground">
-                        {entry.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                      </span>
-                    </div>
-                    
+          {/* Continuous Writing Surface - like a sheet of paper */}
+          <div 
+            className="bg-background/40 backdrop-blur-sm rounded-lg p-8 shadow-sm"
+            style={{
+              backgroundImage: 'repeating-linear-gradient(transparent, transparent 31px, hsl(var(--border) / 0.08) 31px, hsl(var(--border) / 0.08) 32px)',
+              lineHeight: '32px',
+            }}
+          >
+            <div className="space-y-6">
+              <AnimatePresence>
+                {logEntries.map((entry) => (
+                  <motion.div
+                    key={entry.id}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.2 }}
+                    className="group cursor-pointer transition-opacity duration-200 hover:opacity-100 opacity-90"
+                    onClick={() => editingMomentId !== entry.id && handleEditMoment(entry.id)}
+                  >
                     {editingMomentId === entry.id ? (
                       <textarea
                         value={editingText}
@@ -262,40 +247,47 @@ const Index = () => {
                             handleSaveEdit(entry.id);
                           }
                         }}
-                        className="w-full p-3 bg-background/50 border border-border rounded-lg outline-none resize-none text-foreground leading-relaxed"
+                        className="w-full p-2 bg-background/50 border border-border/20 rounded outline-none resize-none text-foreground leading-relaxed"
                         rows={4}
                         autoFocus
+                        style={{ lineHeight: '32px' }}
                       />
                     ) : (
-                      <p className="text-sm text-foreground/80 leading-relaxed whitespace-pre-wrap">
-                        {entry.text}
-                      </p>
+                      <div className="relative">
+                        <p 
+                          className="text-foreground/90 leading-relaxed whitespace-pre-wrap text-lg"
+                          style={{ 
+                            lineHeight: '32px',
+                            color: `${entry.color}dd`,
+                          }}
+                        >
+                          {entry.text}
+                        </p>
+                        <span 
+                          className="absolute -left-6 top-0 text-xs opacity-0 group-hover:opacity-60 transition-opacity duration-200 text-muted-foreground"
+                        >
+                          {entry.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                        </span>
+                      </div>
                     )}
-                  </div>
-                </motion.div>
-              ))}
-            </AnimatePresence>
-          </div>
+                  </motion.div>
+                ))}
+              </AnimatePresence>
 
-          {/* New Entry Input at Bottom */}
-          <div 
-            className="w-full rounded-lg overflow-hidden transition-all duration-300"
-            style={{
-              borderWidth: '3px',
-              borderColor: moodColor,
-              boxShadow: `0 0 20px ${moodColor}20`,
-            }}
-          >
-            <div className="relative">
-              <textarea
-                value={text}
-                onChange={handleTextChange}
-                onKeyDown={handleKeyDown}
-                placeholder="Start writing your thoughts... (Press Enter to save as a moment)"
-                className="w-full h-32 p-4 bg-card/50 backdrop-blur-sm border-none outline-none resize-none text-lg leading-relaxed text-foreground placeholder:text-muted-foreground"
-              />
-              <MicroComments comments={microComments} />
-              <MemoryBubbles memory={memoryBubble} />
+              {/* Live Input - blends into the same page */}
+              <div className="relative">
+                <textarea
+                  value={text}
+                  onChange={handleTextChange}
+                  onKeyDown={handleKeyDown}
+                  placeholder="Continue writing..."
+                  className="w-full p-2 bg-transparent border-none outline-none resize-none text-lg leading-relaxed text-foreground placeholder:text-muted-foreground/40"
+                  rows={6}
+                  style={{ lineHeight: '32px' }}
+                />
+                <MicroComments comments={microComments} />
+                <MemoryBubbles memory={memoryBubble} />
+              </div>
             </div>
           </div>
         </div>
